@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>For Dr. Khushi Desai</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#e9f7f5; --ink:#0f3d47; --mint:#bfeadf; --coral:#ff6f91; --sun:#ffd166; --card:#ffffff; --soft:#5b7f86;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){--bg:#0e2a30; --ink:#e8fbf7; --mint:#1d5058; --card:#14414a; --soft:#9cc7cc;}
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Nunito,system-ui,sans-serif;font-size:17px;line-height:1.55;min-height:100vh}
+h1,h2{font-family:Fredoka,system-ui,sans-serif;font-weight:600;line-height:1.15;margin:0}
+main{max-width:720px;margin:0 auto;padding:28px 20px 60px}
+.hero{text-align:center;padding-top:12px}
+.hero h1{font-size:clamp(2rem,8vw,3.2rem)}
+.hero p{margin:10px auto 0;max-width:30em;color:var(--soft)}
+.stage{display:flex;flex-direction:column;align-items:center;margin:22px 0 8px}
+#tooth{background:none;border:0;cursor:pointer;padding:6px;border-radius:50%;-webkit-tap-highlight-color:transparent}
+#tooth svg{width:min(62vw,250px);height:auto;display:block;transition:transform .15s}
+#tooth:active svg{transform:scale(.93)}
+#tooth.pop svg{animation:pop .45s}
+@keyframes pop{30%{transform:scale(1.14) rotate(-5deg)}60%{transform:scale(.97) rotate(4deg)}100%{transform:none}}
+#tooth:focus-visible,.flip:focus-visible,.btn:focus-visible,.rx:focus-visible{outline:3px solid var(--coral);outline-offset:3px}
+#say{min-height:3.4em;text-align:center;font-family:Fredoka,sans-serif;font-size:1.25rem;max-width:22em;margin:8px 0 6px}
+.meter{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
+.meter i{width:22px;height:22px;border-radius:50%;background:var(--mint);transition:background .25s,transform .25s}
+.meter i.on{background:var(--coral);transform:scale(1.12)}
+.hint{text-align:center;color:var(--soft);font-size:.95rem;margin-top:8px}
+section{margin-top:54px}
+h2{font-size:1.7rem;margin-bottom:6px}
+.sub{color:var(--soft);margin:0 0 18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}
+.flip{font:inherit;color:inherit;text-align:left;background:var(--card);border:2px solid var(--mint);border-radius:18px;padding:18px;min-height:132px;cursor:pointer;display:flex;flex-direction:column;justify-content:center;gap:6px;transition:background .25s,border-color .25s}
+.flip .front{font-family:Fredoka,sans-serif;font-size:1.15rem}
+.flip .back{display:none}
+.flip.open{background:var(--sun);border-color:var(--sun);color:#3b2b00}
+.flip.open .front{display:none}
+.flip.open .back{display:block;font-weight:600}
+.rxbox{background:var(--card);border:2px dashed var(--coral);border-radius:20px;padding:20px}
+.rxbox h3{font-family:Fredoka,sans-serif;margin:0 0 4px;font-size:1.3rem}
+.rx{display:flex;gap:12px;align-items:center;width:100%;font:inherit;color:inherit;text-align:left;background:none;border:0;border-top:1px solid var(--mint);padding:12px 0;cursor:pointer}
+.rx:first-of-type{border-top:0}
+.box{flex:none;width:26px;height:26px;border-radius:8px;border:2px solid var(--coral);display:grid;place-items:center;color:#fff;font-weight:700}
+.rx.done .box{background:var(--coral)}
+.rx.done span.t{text-decoration:line-through;color:var(--soft)}
+.letter{background:var(--card);border-radius:22px;padding:26px 22px;margin-top:10px}
+.letter p{margin:0 0 14px;max-width:34em}
+.lock{text-align:center;padding:30px 18px;border:2px dashed var(--mint);border-radius:22px;color:var(--soft)}
+.btn{font:inherit;font-weight:700;background:var(--coral);color:#fff;border:0;border-radius:999px;padding:12px 22px;cursor:pointer}
+[hidden]{display:none!important}
+canvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:5}
+footer{text-align:center;color:var(--soft);margin-top:60px;font-size:.95rem}
+@media (prefers-reduced-motion:reduce){#tooth.pop svg{animation:none}*{transition:none!important}}
+</style>
+</head>
+<body>
+<canvas id="fx" aria-hidden="true"></canvas>
+<main>
+  <div class="hero">
+    <h1>Hello, Dr. Khushi Desai</h1>
+    <p>This little page was made just for you. Your only job today is to tap the tooth.</p>
+  </div>
+
+  <div class="stage">
+    <button id="tooth" aria-label="Tap the tooth">
+      <svg viewBox="0 0 200 220" role="img" aria-hidden="true">
+        <path d="M100 14c-22-16-62-12-74 20-10 26 2 48 8 70 6 24 6 70 24 76 14 4 16-34 26-56 4-8 12-8 16 0 10 22 12 60 26 56 18-6 18-52 24-76 6-22 18-44 8-70C162 2 122-2 100 14z" fill="#fff" stroke="#0f3d47" stroke-width="6" stroke-linejoin="round"/>
+        <path d="M52 40c6-10 18-14 28-10" stroke="#bfeadf" stroke-width="7" stroke-linecap="round" fill="none"/>
+        <circle cx="78" cy="78" r="7" fill="#0f3d47"/><circle cx="122" cy="78" r="7" fill="#0f3d47"/>
+        <circle cx="62" cy="96" r="9" fill="#ff6f91" opacity=".55"/><circle cx="138" cy="96" r="9" fill="#ff6f91" opacity=".55"/>
+        <path id="mouth" d="M82 100q18 20 36 0" stroke="#0f3d47" stroke-width="6" stroke-linecap="round" fill="none"/>
+      </svg>
+    </button>
+    <div id="say" aria-live="polite">Go on, give it a tap.</div>
+    <div class="meter" id="meter" aria-label="Smile meter"></div>
+    <div class="hint" id="hint">Fill all 10 hearts to unlock something special.</div>
+  </div>
+
+  <section>
+    <h2>Today’s prescription</h2>
+    <p class="sub">Doctor’s orders, for the doctor. Tick each one off.</p>
+    <div class="rxbox" id="rxbox">
+      <h3>Rx</h3>
+      <button class="rx"><span class="box"></span><span class="t">One big smile, taken at once</span></button>
+      <button class="rx"><span class="box"></span><span class="t">A long break from studying MDS</span></button>
+      <button class="rx"><span class="box"></span><span class="t">Your favorite snack, no sharing</span></button>
+      <button class="rx"><span class="box"></span><span class="t">A good laugh, repeat as needed</span></button>
+    </div>
+  </section>
+
+  <section>
+    <h2>Pick a card</h2>
+    <p class="sub">Tap each one to see what’s inside.</p>
+    <div class="grid" id="cards"></div>
+  </section>
+
+  <section>
+    <h2>A letter for you</h2>
+    <div class="lock" id="lock">Locked. Fill the smile meter above to open it.</div>
+    <div class="letter" id="letter" hidden>
+      <p>Dear Khushi,</p>
+      <p>Every day you help people leave with a better smile than they came in with. That’s a rare thing, and you do it while working hard toward your MDS.</p>
+      <p>I’m proud of you. On the long days, I hope you remember how much you’re loved and how far you’ve already come.</p>
+      <p>You make my world brighter, and I’m so lucky to have you.</p>
+      <p>Always yours.</p>
+      <button class="btn" id="again">Celebrate again</button>
+    </div>
+  </section>
+
+  <footer>Made with love, just for you.</footer>
+</main>
+
+<script>
+(function(){
+  var lines=[
+    "Future MDS. Say it out loud!",
+    "Your smile fixes everything.",
+    "Hardworking, brilliant, and kind.",
+    "Patients are lucky to have you.",
+    "You make tough days feel easier.",
+    "Dr. Desai has entered the chat.",
+    "Proud of you, always.",
+    "You’re the best kind of rare.",
+    "Plot twist: you’re amazing.",
+    "One more tap. You’ve earned it!"
+  ];
+  var reasons=[
+    ["Your kindness","You treat everyone gently, patients and people alike."],
+    ["Your hard work","You keep going, even when the schedule is brutal."],
+    ["Your laugh","It can turn any bad day around."],
+    ["Your future","MDS, your own clinic, anything you want. You’ll get there."],
+    ["Your care","You notice the little things about people."],
+    ["Just you","There’s nobody else like you, and I’m glad you’re mine."]
+  ];
+  var total=10, n=0, unlocked=false;
+  var tooth=document.getElementById('tooth'), say=document.getElementById('say'),
+      meter=document.getElementById('meter'), hint=document.getElementById('hint'),
+      lock=document.getElementById('lock'), letter=document.getElementById('letter'),
+      mouth=document.getElementById('mouth');
+  for(var i=0;i<total;i++){meter.appendChild(document.createElement('i'));}
+
+  var cards=document.getElementById('cards');
+  reasons.forEach(function(r){
+    var b=document.createElement('button');b.className='flip';
+    b.innerHTML='<span class="front">'+r[0]+'</span><span class="back">'+r[1]+'</span>';
+    b.addEventListener('click',function(){b.classList.toggle('open');burst(b.getBoundingClientRect().left+60,b.getBoundingClientRect().top+40,10);});
+    cards.appendChild(b);
+  });
+
+  document.querySelectorAll('.rx').forEach(function(b){
+    b.addEventListener('click',function(){
+      b.classList.toggle('done');
+      b.querySelector('.box').textContent=b.classList.contains('done')?'✓':'';
+      var all=document.querySelectorAll('.rx').length===document.querySelectorAll('.rx.done').length;
+      if(all){burst(innerWidth/2,innerHeight/2,50);}
+    });
+  });
+
+  tooth.addEventListener('click',function(e){
+    n++;
+    say.textContent=lines[(n-1)%lines.length];
+    var dots=meter.children;
+    for(var i=0;i<dots.length;i++){dots[i].classList.toggle('on',i<Math.min(n,total));}
+    tooth.classList.remove('pop');void tooth.offsetWidth;tooth.classList.add('pop');
+    mouth.setAttribute('d',n%2?'M76 98q24 34 48 0z':'M82 100q18 20 36 0');
+    var r=tooth.getBoundingClientRect();
+    burst(r.left+r.width/2,r.top+r.height/2,14);
+    if(n<total){hint.textContent=(total-n)+' more to go…';}
+    if(n>=total&&!unlocked){
+      unlocked=true;hint.textContent='Unlocked! Scroll down.';
+      lock.hidden=true;letter.hidden=false;burst(innerWidth/2,innerHeight/2,90);
+    }
+  });
+  document.getElementById('again').addEventListener('click',function(){burst(innerWidth/2,innerHeight/2,90);});
+
+  /* confetti */
+  var cv=document.getElementById('fx'),cx=cv.getContext('2d'),ps=[],run=false;
+  var still=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function size(){cv.width=innerWidth*devicePixelRatio;cv.height=innerHeight*devicePixelRatio;cx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);}
+  size();addEventListener('resize',size);
+  var glyphs=['❤','✦','✨','🦷','💖'],cols=['#ff6f91','#ffd166','#2bb5a6','#9b8cff'];
+  function burst(x,y,k){
+    if(still)return;
+    for(var i=0;i<k;i++){
+      var a=Math.random()*Math.PI*2,s=2+Math.random()*6;
+      ps.push({x:x,y:y,vx:Math.cos(a)*s,vy:Math.sin(a)*s-3,g:glyphs[Math.floor(Math.random()*glyphs.length)],c:cols[i%cols.length],l:1,z:14+Math.random()*14});
+    }
+    if(!run){run=true;requestAnimationFrame(tick);}
+  }
+  function tick(){
+    cx.clearRect(0,0,innerWidth,innerHeight);
+    ps=ps.filter(function(p){return p.l>0;});
+    ps.forEach(function(p){
+      p.x+=p.vx;p.y+=p.vy;p.vy+=.18;p.vx*=.99;p.l-=.013;
+      cx.globalAlpha=Math.max(p.l,0);cx.fillStyle=p.c;cx.font=p.z+'px sans-serif';cx.fillText(p.g,p.x,p.y);
+    });
+    if(ps.length){requestAnimationFrame(tick);}else{run=false;cx.clearRect(0,0,innerWidth,innerHeight);}
+  }
+})();
+</script>
+</body>
+</html>
